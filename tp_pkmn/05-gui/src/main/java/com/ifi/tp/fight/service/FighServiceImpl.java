@@ -33,9 +33,10 @@ public class FighServiceImpl implements FightService {
         return this.fightRepository.findAll();
     }
 
+
     @Override
-    public Iterable<Fight> getAllFightsFromTrainer(int idTrainer) {
-        return null;
+    public Iterable<Fight> getAllFightsFromTrainer(Trainer t) {
+        return this.fightRepository.findByTrainerAOrTrainerB(t.getName(),t.getName());
     }
 
     @Override
@@ -47,6 +48,7 @@ public class FighServiceImpl implements FightService {
     public Fight createFight(Fight f) {
         return this.fightRepository.save(f);
     }
+
 
     @Override
     public Fight executeFight(Fight fight) {

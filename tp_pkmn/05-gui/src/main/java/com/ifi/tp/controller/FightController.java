@@ -18,8 +18,9 @@ import java.util.ArrayList;
 @Controller
 public class FightController {
 
-
+    @Autowired
     private FightService fightService;
+    @Autowired
     private TrainerService trainerService;
 
 
@@ -37,8 +38,8 @@ public class FightController {
         Fight a = new Fight();
         a.setTrainerB("Ash");
         a.setTrainerA("Misty");
-        fightService.executeFight(a);
-        fightService.createFight(a);
+       // fightService.executeFight(a);
+        //fightService.createFight(a);
         modelAndView.addObject("fights",fightService.getAllFights());
 
         return modelAndView;
@@ -55,19 +56,17 @@ public class FightController {
         return modelAndView;
     }
 
-    @GetMapping("/fights/{trainer}")
-    ModelAndView getFromTrainer(@PathVariable String id){
-        var modelAndView = new ModelAndView("fight");
+    @GetMapping("/fights/{name}")
+    ModelAndView getFromTrainer(@PathVariable String name){
+        var modelAndView = new ModelAndView("fights");
 
-        modelAndView.addObject("fight", fightService.getFight(Integer.parseInt(id)));
-
+        modelAndView.addObject("fights", fightService.getAllFightsFromTrainer(trainerService.getTrainer(name)));
         return modelAndView;
     }
 
 
-
     @PostMapping("/fights/{trainer1}/{trainer2}")
-    void postFight(@PathVariable String trainer1, @PathVariable String trainer2) {
+    String postFight(@PathVariable String trainer1, @PathVariable String trainer2) {
         Trainer t1 = trainerService.getTrainer(trainer1);
         Trainer t2 = trainerService.getTrainer(trainer2);
         ArrayList<Fight> fights = new ArrayList<>();
@@ -76,6 +75,7 @@ public class FightController {
         a.setTrainerA(trainer2);
         fightService.executeFight(a);
         fightService.createFight(a);
+        return "redirect:/fight/" + a.getId();
     }
 
 }

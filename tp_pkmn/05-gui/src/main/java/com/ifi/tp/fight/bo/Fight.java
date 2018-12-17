@@ -47,4 +47,8 @@ public class Fight {
     public void setWinner(String winner) {
         this.winner = winner;
     }
+
+    public int getId() {
+        return id;
+    }
 }
