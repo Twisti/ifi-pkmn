@@ -25,7 +25,9 @@
     </nav>
     <div class="container">
         <h1 class="pt-md-5 pb-md-5">Trainer : {{trainer.name}} <img src="{{trainer.picture}}" style="height: 100px;"/></h1>
-        {{trainer.pokedollars}} PokéDollars !
+        {{trainer.pokedollars}} PokéDollars ! <br>
+        <a href="/trainers/{{trainer.name}}/arena">TEST YOUR MIGHT (Arena)</a> <br>
+        <a href="/fights/{{trainer.name}}">Show history of fights</a>
         <div class="card-deck">
             {{#trainer.team}}
             <div class="col-md-3">

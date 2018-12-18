@@ -110,7 +110,7 @@ public class FighServiceImpl implements FightService {
                 }
 
                 if(tA.getTeam().size() == 0 ){
-                    fight.getCombatStep().add(tA.getName() + "n'est plus de pokémons en vie...");
+                    fight.getCombatStep().add(tA.getName() + " n'a plus de pokémons en vie...");
                     fight.setWinner(tB.getName());
                     fight.getCombatStep().add(tB.getName() + " est gagnant.");
                 }else if (tB.getTeam().size() == 0){

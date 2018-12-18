@@ -36,10 +36,7 @@ public class FightController {
 
         ArrayList<Fight> fights = new ArrayList<>();
         Fight a = new Fight();
-        a.setTrainerB("Ash");
-        a.setTrainerA("Misty");
-       // fightService.executeFight(a);
-        //fightService.createFight(a);
+
         modelAndView.addObject("fights",fightService.getAllFights());
 
         return modelAndView;

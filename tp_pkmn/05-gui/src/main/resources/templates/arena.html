@@ -18,35 +18,30 @@
         </a>
         <a class="py-2 d-none d-md-inline-block" href="/fights">
             <img src="/icons/battle.png" style="width: 50px;"/>
-            Fight
+            Fights
         </a>
-
     </div>
 </nav>
 
 <div class="container">
-    <h1 class="pt-md-5 pb-md-5">Fights</h1>
+    <h1 class="pt-md-5 pb-md-5"><Arena></Arena></h1>
 
     <div class="card-deck">
+        {{#trainers}}
+        <div class="col-md-3">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{name}}</h4>
+                </div>
+                <img class="card-img-top" src="{{picture}}" style="" alt="">
 
-        <div class="col-md-5">
-            {{fight.trainerA}} VS {{fight.trainerB}}
-            <table class="table">
+                <form action="/fights/{{name}}/{{trainer}}" method="get" target="_blank">
 
-                <tbody>
-                {{#fight.combatStep}}
-                <tr>
-                    <td>  {{.}}</td>
-
-
-                </tr>
-                {{/fight.combatStep}}
-
-                </tbody>
-            </table>
-
+                    <button class="btn btn-lg btn-block btn-outline-primary" type="submit" formmethod="post">FIGHT !</button>
+                </form>
+            </div>
         </div>
-
+        {{/trainers}}
     </div>
 
 
