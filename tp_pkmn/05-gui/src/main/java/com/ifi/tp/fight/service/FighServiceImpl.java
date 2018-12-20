@@ -1,6 +1,7 @@
 package com.ifi.tp.fight.service;
 
 import com.ifi.tp.fight.bo.Fight;
+import com.ifi.tp.fight.bo.FightLog;
 import com.ifi.tp.repository.FightRepository;
 import com.ifi.tp.trainers.bo.Pokemon;
 import com.ifi.tp.trainers.bo.Trainer;
@@ -56,12 +57,13 @@ public class FighServiceImpl implements FightService {
         Trainer tB = trainerService.getTrainer(fight.trainerB());
         if (tA == null || tB == null) {return  fight;}
         else {
+            int currentStep = 0;
 
-            fight.getCombatStep().add("Début du combat");
+            fight.getCombatStep().add(new FightLog(currentStep,"Début du combat"));
 
 
             while(tA.getTeam().size() != 0 &&  tB.getTeam().size() != 0) {
-
+                currentStep++;
                 Pokemon pkmA = tA.getTeam().get(0);
                 Pokemon pkmB = tB.getTeam().get(0);
 
@@ -72,20 +74,22 @@ public class FighServiceImpl implements FightService {
 
                 if (pkmA.getType().getStats().getSpeed() + pkmA.getLevel() > pkmB.getType().getStats().getSpeed() + pkmB.getLevel()) {
                     pkmAStrike = true;
-                    fight.getCombatStep().add(pkmA.getType().getName() + " commence le combat.");
+                    fight.getCombatStep().add(new FightLog(currentStep,pkmA.getType().getName() + " commence le combat."));
+
                 } else {
-                    fight.getCombatStep().add(pkmB.getType().getName() + " commence le combat.");
+                    fight.getCombatStep().add(new FightLog(currentStep,pkmB.getType().getName() + " commence le combat."));
 
                 }
 
 
                 int tmpDmg;
                 while (pkmA.getHp() > 0 && pkmB.getHp() > 0) {
+                    currentStep++;
                     if (pkmAStrike) {
                         tmpDmg = calculDamage(pkmA, pkmB);
                         pkmB.setHp(pkmB.getHp() - tmpDmg);
                         if (pkmB.getHp() < 0) pkmB.setHp(0);
-                        fight.getCombatStep().add(pkmA.getType().getName() + "(" + pkmA.getHp() + "HP)" + " inflige " + tmpDmg + " à " + pkmB.getType().getName() + "(" + pkmB.getHp() + "HP)");
+                        fight.getCombatStep().add(new FightLog(currentStep,pkmA.getType().getName() + "(" + pkmA.getHp() + "HP)" + " inflige " + tmpDmg + " à " + pkmB.getType().getName() + "(" + pkmB.getHp() + "HP)"));
                         pkmAStrike = false;
 
                     } else {
@@ -93,7 +97,7 @@ public class FighServiceImpl implements FightService {
                         tmpDmg = calculDamage(pkmB, pkmA);
                         pkmA.setHp(pkmA.getHp() - tmpDmg);
                         if (pkmA.getHp() < 0) pkmA.setHp(0);
-                        fight.getCombatStep().add(pkmB.getType().getName() + "(" + pkmB.getHp() + "HP)" + " inflige " + tmpDmg + " à " + pkmA.getType().getName() + "(" + pkmA.getHp() + "HP)");
+                        fight.getCombatStep().add(new FightLog(currentStep,pkmB.getType().getName() + "(" + pkmB.getHp() + "HP)" + " inflige " + tmpDmg + " à " + pkmA.getType().getName() + "(" + pkmA.getHp() + "HP)"));
                         pkmAStrike = true;
 
                     }
@@ -101,22 +105,28 @@ public class FighServiceImpl implements FightService {
 
 
                 if (pkmA.getHp() == 0) {
-                    fight.getCombatStep().add(pkmA.getType().getName() + " est KO...");
+                    currentStep++;
+                    fight.getCombatStep().add(new FightLog(currentStep,pkmA.getType().getName() + " est KO..."));
                     tA.getTeam().remove(pkmA);
 
                 } else {
-                    fight.getCombatStep().add(pkmB.getType().getName() + " est KO...");
+                    currentStep++;
+                    fight.getCombatStep().add(new FightLog(currentStep,pkmB.getType().getName() + " est KO..."));
                     tB.getTeam().remove(pkmB);
                 }
 
                 if(tA.getTeam().size() == 0 ){
-                    fight.getCombatStep().add(tA.getName() + " n'a plus de pokémons en vie...");
+                    currentStep++;
+                    fight.getCombatStep().add(new FightLog(currentStep,tA.getName() + " n'a plus de pokémons en vie..."));
                     fight.setWinner(tB.getName());
-                    fight.getCombatStep().add(tB.getName() + " est gagnant.");
+                    currentStep++;
+                    fight.getCombatStep().add(new FightLog(currentStep,tB.getName() + " est gagnant."));
                 }else if (tB.getTeam().size() == 0){
-                    fight.getCombatStep().add(tB.getName() + "  n'a plus de pokémons en vie...");
+                    currentStep++;
+                    fight.getCombatStep().add(new FightLog(currentStep,tB.getName() + "  n'a plus de pokémons en vie..."));
                     fight.setWinner(tA.getName());
-                    fight.getCombatStep().add(tA.getName() + " est gagnant.");;
+                    currentStep++;
+                    fight.getCombatStep().add(new FightLog(currentStep,tA.getName() + " est gagnant."));;
                 }
 
             }

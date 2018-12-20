@@ -1,6 +1,9 @@
 package com.ifi.tp.fight.bo;
 
 import com.ifi.tp.trainers.bo.Trainer;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,9 +17,10 @@ public class Fight {
     private int id;
     private String trainerA,trainerB;
 
+    @Cascade({CascadeType.ALL})
     @Column(name="logs")
-    @ElementCollection(targetClass=String.class)
-    private List<String> combatStep = new ArrayList<>();
+    @OneToMany(cascade = javax.persistence.CascadeType.ALL)
+    private List<FightLog> combatStep = new ArrayList<>();
 
     private String winner ="no";
 
@@ -28,7 +32,7 @@ public class Fight {
         return trainerB;
     }
 
-    public List<String> getCombatStep() {
+    public List<FightLog> getCombatStep() {
         return combatStep;
     }
 
